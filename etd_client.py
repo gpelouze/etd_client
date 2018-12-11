@@ -183,12 +183,17 @@ class ETDClient():
 
         Parameters
         ==========
-        start_date : str, datetime.date or None (default: None)
-            Start day of the search window. Strings should be 'YYYY-MM-DD'.
-            If None, the current day is used.
-        end_date : str, datetime.date or None (default: None)
-            End day of the search window. Strings should be 'YYYY-MM-DD'.
-            If None, start_date + 1 day is used.
+
+        start_date : datetime.date or 'YYYY-MM-DD' string (default: None)
+            Start day of the search window.
+            ETD returns transits starting from the sunset of the day before.
+            If None, query transits starting from tonight (use today + 1 day).
+
+        end_date : datetime.date or 'YYYY-MM-DD' string (default: None)
+            End day of the search window.
+            ETD returns transits until the sunrise of this day.
+            If None, use start_date + 1 day.
+
         location : 2-tuple of float or None (default: None)
             A tuple containing the latitude and longitude of the observation
             location.
@@ -196,6 +201,7 @@ class ETDClient():
 
         Returns
         =======
+
         predictions : pd.DataFrame
             A DataFrame containing the following columns:
 
@@ -225,7 +231,7 @@ class ETDClient():
         if location is None:
             lat, lon = self.location
         if start_date is None:
-            start_date = datetime.date.today()
+            start_date = datetime.date.today() + datetime.timedelta(days=1)
         if end_date is None:
             end_date = start_date + datetime.timedelta(days=1)
         fmt = '%Y-%m-%d'
