@@ -250,3 +250,23 @@ class ETDClient():
 
     def get_planet_predictions(self, starname, planet, location=None):
         raise NotImplementedError
+
+def print_predictions(predictions):
+    p = predictions
+    printable_data = {
+        'object': p.starname + ' ' + p.planet,
+        'date': [t.strftime('%Y-%m-%d') for t in p.begin_time],
+        'begin': [t.strftime('%H:%M') for t in p.begin_time],
+        'center': [t.strftime('%H:%M') for t in p.center_time],
+        'end': [t.strftime('%H:%M') for t in p.end_time],
+        'begin_pos': ['{}° {}'.format(alt, az) for alt, az in zip(p.begin_alt, p.begin_az)],
+        'center_pos': ['{}° {}'.format(alt, az) for alt, az in zip(p.center_alt, p.center_az)],
+        'end_pos': ['{}° {}'.format(alt, az) for alt, az in zip(p.end_alt, p.end_az)],
+        'D': ['{:.0f}'.format(d) for d in p.duration],
+        'V': p.mag,
+        'depth': ['{:.1%}'.format(1 - 10**(-d/2.5)) for d in p.depth],
+        'RA': ['{:>2.0f}h {:>2.0f}m {:>4.1f}s'.format(*ra) for ra in p.ra],
+        'DE': ['{:>2.0f}° {:>2.0f}\' {:>4.1f}"'.format(*de) for de in p.de],
+        }
+    printable_data = pd.DataFrame.from_dict(printable_data)
+    print(printable_data)
