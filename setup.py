@@ -14,7 +14,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/ArcturusB/etd_client',
-    packages=setuptools.find_packages(),
+    py_modules=['etd_client'],
     python_requires='>=3.5',
     install_requires=requirements,
     classifiers=[
