@@ -4,8 +4,8 @@ Unofficial client for to the [Exoplanet Transit Database][etd-home].
 
 ## Installation
 
-1. Clone this repository
-2. Run `pip install .`
+1. Clone this repository: `git clone https://github.com/ArcturusB/etd_client`
+2. Install with pip: `pip install .` or `pip install --user .`
 
 ## Usage examples
 
