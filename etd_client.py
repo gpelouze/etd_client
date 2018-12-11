@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 
+import argparse
 import datetime
 import re
 import warnings
 
 import bs4
-import requests
+import numpy as np
 import pandas as pd
+import requests
 
 class ETDClient():
     def __init__(self, location=None):
@@ -276,3 +278,44 @@ def print_predictions(predictions):
         }
     printable_data = pd.DataFrame.from_dict(printable_data)
     print(printable_data)
+
+def cli(args=None):
+    parser = argparse.ArgumentParser(
+        description='Find exoplanet transit predictions')
+    parser.add_argument(
+        'latitude', type=float,
+        help='Latitude of the observation location')
+    parser.add_argument(
+        'longitude', type=float,
+        help='Longitude of the observation location')
+    parser.add_argument(
+        '--start', type=str, default=None,
+        help='Start of the search timespan (default: tonight)')
+    parser.add_argument(
+        '--end', type=str, default=None,
+        help='End of the search timespan (default: tomorrow morning)')
+    parser.add_argument(
+        '--max-mag', type=float, default=None,
+        help='Maximum magnitude of stars to display.')
+    parser.add_argument(
+        '--min-depth', type=float, default=None,
+        help='Minimum depth (in percent) of transits to display.')
+    args = parser.parse_args(args)
+
+    ec = ETDClient(location=(args.latitude, args.longitude))
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore')
+        p = ec.get_predictions(
+            start_date=args.start,
+            end_date=args.end,
+            )
+
+    args.min_depth = -2.5 * np.log10(1 - args.min_depth / 100)
+
+    filter_mask = np.ones(len(p), dtype=bool)
+    if args.max_mag is not None:
+        filter_mask &= p.mag < args.max_mag
+    if args.min_depth is not None:
+        filter_mask &= p.depth > args.min_depth
+
+    print_predictions(p[filter_mask])

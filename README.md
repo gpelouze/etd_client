@@ -7,7 +7,22 @@ Unofficial client for to the [Exoplanet Transit Database][etd-home].
 1. Clone this repository
 2. Run `pip install .`
 
-## Example
+## Usage examples
+
+### From the command line
+
+~~~bash
+$ etd_client 48.7027 2.1827 --max-mag 12.5 --min-depth 1.5
+        object        date  begin center    end begin_pos center_pos   end_pos    D      V depth             RA              DE
+4    WASP-69 b  2018-12-11  17:16  18:23  19:29  32.0° SW   24.0° SW  15.0° SW  134   9.87  1.8%  21h  0m  6.2s   -5°  5' 40.1"
+15  HAT-P-32 b  2018-12-12  01:06  02:40  04:13  46.0° NW   33.0° NW  21.0° NW  186  11.29  2.2%   2h  4m 10.2s   46° 41' 16.8"
+18   WASP-43 b  2018-12-12  04:11  04:46  05:20   33.0° S    34.0° S   33.0° S   70  12.40  2.6%  10h 19m 38.0s   -9° 48' 21.9"
+29   WASP-77 b  2018-12-12  20:14  21:19  22:23   34.0° S    34.0° S  31.0° SW  130  10.29  1.7%   2h 28m 37.2s   -7°  3' 38.5"
+34   WASP-35 b  2018-12-12  20:33  22:05  23:37  24.0° SE   33.0° SE   36.0° S  184  10.95  1.8%   5h  4m 19.6s   -6° 13' 47.2"
+40   WASP-31 b  2018-12-13  05:04  06:24  07:43   22.0° S    22.0° S  18.0° SW  159  11.70  1.5%  11h 17m 45.4s  -19°  3' 17.3"
+~~~
+
+### As a Python module
 
 ~~~python
 from etd_client import ETDClient
