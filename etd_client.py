@@ -230,17 +230,18 @@ class ETDClient():
             de                Declination of the star   [°, ', "]   [37.0, 33.0, 2.5]
         '''
 
+        fmt = '%Y-%m-%d'
+        if isinstance(start_date, str):
+            start_date = datetime.datetime.strptime(start_date, fmt).date()
+        if isinstance(end_date, str):
+            end_date = datetime.datetime.strptime(end_date, fmt).date()
+
         if location is None:
             lat, lon = self.location
         if start_date is None:
             start_date = datetime.date.today() + datetime.timedelta(days=1)
         if end_date is None:
             end_date = start_date + datetime.timedelta(days=1)
-        fmt = '%Y-%m-%d'
-        if isinstance(start_date, str):
-            start_date = datetime.datetime.strptime(start_date, fmt).date()
-        if isinstance(end_date, str):
-            end_date = datetime.datetime.strptime(end_date, fmt).date()
 
         query = {
             'sirka': lat,
@@ -290,10 +291,10 @@ def cli(args=None):
         help='Longitude of the observation location')
     parser.add_argument(
         '--start', type=str, default=None,
-        help='Start of the search timespan (default: tonight)')
+        help='Start of the search timespan, with format YYYY-MM-DD (default: tonight)')
     parser.add_argument(
         '--end', type=str, default=None,
-        help='End of the search timespan (default: tomorrow morning)')
+        help='End of the search timespan, with format YYYY-MM-DD (default: tomorrow morning)')
     parser.add_argument(
         '--max-mag', type=float, default=None,
         help='Maximum magnitude of stars to display.')
